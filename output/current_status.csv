@@ -1,0 +1,5 @@
+stock,taxa,variable,year,mean,sd,lower,upper,status
+Trachinotus.ovatus,Trachinotus ovatus,b_div_bmsy,2018,0.62662086867294,0.270757619894675,0.414170333800682,0.975104017797973,overfished
+Scomber.colias,Scomber colias,b_div_bmsy,2018,0.745567696750152,0.246845709340382,0.503403999413644,1.09702438284291,overfished
+Sphyraena.sphyraena,Sphyraena sphyraena,b_div_bmsy,2018,0.620834306776948,0.267329027184225,0.40737523179214,0.960248010313324,overfished
+Scomberesox.saurus,Scomberesox saurus,b_div_bmsy,2018,0.634534551139186,0.268339244356558,0.413836179082198,0.973086794243396,overfished
