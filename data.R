@@ -5,7 +5,7 @@
 
 library(TAF)
 library(SOFIA)
-supressMessages(library(dplyr)) # filter, group_by, left_join, mutate, ...
+suppressMessages(library(dplyr)) # filter, group_by, left_join, mutate, ...
 library(ggplot2)
 library(sraplus) # plot_driors
 library(tidyr)   # nest, pivot_longer
@@ -59,8 +59,11 @@ stocks <- addDriors(stocks, priors, same.priors=TRUE)
 
 ## Plot driors
 pdf("data/driors.pdf")
-for(i in seq_len(nrow(stocks$driors)))
-  suppressWarnings(print(plot_driors(stocks$driors[[i]])))
+for(i in seq_len(nrow(stocks)))
+{
+  suppressWarnings(print(plot_driors(stocks$driors[[i]]) +
+                         ggtitle(stocks$stock[i])))
+}
 dev.off()
 
 ## Export stocks and catch_effort
