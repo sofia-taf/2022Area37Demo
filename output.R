@@ -1,11 +1,10 @@
 ## Extract results of interest, write TAF output tables
 
 ## Before: results.rds (model)
-## After:  stock_tables/*.csv, all_effort.txt, current_status.csv,
-##         stock_timeseries.csv (output)
+## After:  stock_tables/*.csv, current_status.csv, stock_timeseries.csv (output)
 
 library(TAF)
-library(dplyr) # case_when, count, group_by, select, filter, mutate
+library(dplyr, warn.conflicts=FALSE) # case_when, count, group_by, select, ...
 library(tidyr) # pivot_wider, unnest
 
 mkdir("output")
@@ -22,17 +21,13 @@ current_status <- stocks %>%
                             mean > 0.8 ~ "fully fished",
                             TRUE ~ "overfished"))
 write.taf(current_status, "output/current_status.csv")
-current_status %>%
-  group_by(status) %>%
-  count()
+table(current_status$status)
 
 ## Write stock tables containing model results by year
 mkdir("output/stock_tables")
 for(i in 1:nrow(stocks)){
   write.csv(stocks$sraplus_fit[i][[1]]$results,
             file=paste0("output/stock_tables/", stocks$stock[i], ".csv"))
-  write.table(stocks$sraplus_fit[i][[1]]$results,
-              file="output/all_effort.txt", append=TRUE)
 }
 
 ## Examine diagnostics
