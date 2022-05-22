@@ -1,14 +1,13 @@
 ## Preprocess data, write TAF data tables
 
 ## Before: catch.csv, effort.csv, priors.csv (bootstrap/data)
-## After:  catch_effort.csv, catch_by_stock.png, catch_relative.png,
-##         catch_total.png, driors_2.png, input.rds (data)
+## After:  catch_effort.csv, catch.png, driors.pdf, input.rds (data)
 
 library(TAF)
 library(SOFIA)
 library(dplyr)   # filter, group_by, left_join, mutate, summarise, ungroup
 library(ggplot2)
-library(sraplus) # format_driors, plot_driors
+library(sraplus) # plot_driors
 library(tidyr)   # nest, pivot_longer
 
 mkdir("data")
@@ -20,11 +19,12 @@ catch <- pivot_longer(catch, !Year, "stock", values_to="capture")
 names(catch) <- tolower(names(catch))
 
 ## Plot catches
+taf.png("data/catch.png")
 catch %>%
   ggplot(aes(year, capture, color=stock)) +
   geom_line(show.legend=FALSE) +
   geom_point()
-ggsave("data/catch_by_stock.png")
+dev.off()
 
 ## Select stocks with min 10 years of non-zero catches...
 viable_stocks <- catch %>%
@@ -58,9 +58,11 @@ stocks <- catch_effort %>%
 priors <- read.taf("bootstrap/data/priors.csv")
 stocks <- addDriors(stocks, priors, same.priors=TRUE)
 
-## Plot driors for one stock
-plot_driors(stocks$driors[[2]])
-ggsave("data/driors_2.png")
+## Plot driors
+pdf("data/driors.pdf")
+for(i in seq_along(stocks$driors))
+  suppressWarnings(print(plot_driors(stocks$driors[[i]])))
+dev.off()
 
 ## Export stocks and catch_effort
 saveRDS(stocks, "data/input.rds")
