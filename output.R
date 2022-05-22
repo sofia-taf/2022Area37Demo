@@ -45,7 +45,7 @@ for(i in 1:n){
 }
 resTab <- Reduce(rbind, resList)
 newResTab <- resTab
-names(newResTab) <- c("stock", "yr", "bbmsy", "ffmsy")
+names(newResTab) <- c("stock", "year", "bbmsy", "ffmsy")
 newResTab$bbmsy.effEdepP <- newResTab$bbmsy
 newResTab$ffmsy.effEdepP <- newResTab$ffmsy
 write.taf(newResTab, "output/stock_timeseries.csv")
