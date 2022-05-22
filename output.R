@@ -32,7 +32,7 @@ for(i in seq_len(nrow(stocks))){
 }
 
 ## Examine diagnostics
-stocks$sraplus_diagnostics[[1]]$final_gradient
+stocks$sraplus_diagnostics[[1]]
 
 ## Tabulate B/Bmsy and F/Fmsy time series for each stock
 n <- length(stocks$stock)
@@ -45,7 +45,7 @@ for(i in 1:n){
 }
 resTab <- Reduce(rbind, resList)
 newResTab <- resTab
-names(newResTab) <- c("Stock", "yr", "bbmsy", "ffmsy")
+names(newResTab) <- c("stock", "yr", "bbmsy", "ffmsy")
 newResTab$bbmsy.effEdepP <- newResTab$bbmsy
 newResTab$ffmsy.effEdepP <- newResTab$ffmsy
 write.taf(newResTab, "output/stock_timeseries.csv")
