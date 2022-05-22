@@ -25,9 +25,10 @@ table(current_status$status)
 
 ## Write stock tables containing model results by year
 mkdir("output/stock_tables")
-for(i in 1:nrow(stocks)){
-  write.csv(stocks$sraplus_fit[i][[1]]$results,
-            file=paste0("output/stock_tables/", stocks$stock[i], ".csv"))
+for(i in seq_len(nrow(stocks))){
+  filename <- paste0(chartr(" ", "_", stocks$stock[i]), ".csv")
+  write.taf(stocks$sraplus_fit[i][[1]]$results,
+            file=file.path("output/stock_tables", filename))
 }
 
 ## Examine diagnostics
