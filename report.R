@@ -7,12 +7,12 @@
 ##         stock_posterior.pdf, stock_timeseries.pdf (report)
 
 library(TAF)
+library(SOFIA)
 suppressMessages(library(dplyr)) # mutate
 suppressMessages(library(egg))   # ggarrange
 library(ggplot2)
 suppressMessages(library(purrr)) # map2, walk2
-library(sraplus)      # plot_driors, plot_prior_posterior, plot_sraplus
-source("utilities.R") # plotProp
+library(sraplus) # plot_driors, plot_prior_posterior, plot_sraplus
 
 mkdir("report")
 
@@ -59,8 +59,8 @@ dev.off()
 ## Plot time series for each stock
 newResTab <- read.taf("output/stock_timeseries.csv")
 taf.png("status_by_year")
-p1 <- plotProp(newResTab, method="effEdepP", cats=3, type="prop")
-p2 <- plotProp(newResTab, method="effEdepP", cats=3, type="all")
+p1 <- plotCat(newResTab, method="effEdepP", cats=3, type="count")
+p2 <- plotCat(newResTab, method="effEdepP", cats=3, type="stock")
 ggarrange(p1, p2, ncol=1)
 dev.off()
 
