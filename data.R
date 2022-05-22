@@ -59,7 +59,7 @@ stocks <- addDriors(stocks, priors, same.priors=TRUE)
 
 ## Plot driors
 pdf("data/driors.pdf")
-for(i in seq_along(stocks$driors))
+for(i in seq_len(nrow(stocks$driors)))
   suppressWarnings(print(plot_driors(stocks$driors[[i]])))
 dev.off()
 
