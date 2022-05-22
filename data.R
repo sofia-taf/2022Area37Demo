@@ -25,12 +25,6 @@ catch %>%
   geom_line(show.legend=FALSE) +
   geom_point()
 ggsave("data/catch_by_stock.png")
-catch %>%
-  group_by(year) %>%
-  summarise(total_capture=sum(capture)) %>%
-  ggplot(aes(year, total_capture)) +
-  geom_line()
-ggsave("data/catch_total.png")
 
 ## Select stocks with min 10 years of non-zero catches...
 viable_stocks <- catch %>%
@@ -44,14 +38,6 @@ catch <- catch %>%
   group_by(stock) %>%
   filter(year > min(year[capture > 0]),
          year <= max(year[capture > 0]))
-
-## Plot relative catch
-catch %>%
-  group_by(stock) %>%
-  mutate(capture = capture / max(capture)) %>%
-  ggplot(aes(year, capture, group=stock)) +
-  geom_point()
-ggsave("data/catch_relative.png")
 
 ## Add column 'taxa'
 catch$taxa <- catch$stock
