@@ -54,17 +54,11 @@ catch %>%
   geom_point()
 ggsave("data/catch_relative.png")
 
-## Add columns 'stock_number_thing' and 'taxa'
-catch <- catch %>%
-  ungroup() %>%
-  mutate(stock_number_thing=str_extract_all(stock, "\\d")) %>%
-  mutate(taxa = str_replace_all(stock, "\\d", "")) %>%
-  mutate(taxa = str_replace_all(taxa, "\\.", " ") %>% str_trim()) %>%
-  mutate(taxa = str_replace_all(taxa, "  ", " ") %>% str_trim()) %>%
-  filter(!is.na(taxa))
+## Add column 'taxa'
+catch$taxa <- catch$stock
 
 ## Read effort data, add 'effort' column
-effort <- read.csv("bootstrap/data/effort.csv")
+effort <- read.taf("bootstrap/data/effort.csv")
 index <- effort$E1
 catch_effort <- catch %>%
   left_join(effort, by=c("year"="Year"))
@@ -76,7 +70,7 @@ stocks <- catch_effort %>%
   ungroup()
 
 ## Read Priors data
-priors<-read.csv("bootstrap/data/priors.csv")
+priors <- read.taf("bootstrap/data/priors.csv")
 
 ## Add nested 'driors' column (data and priors)
 stocks <- stocks %>%
