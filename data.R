@@ -1,16 +1,12 @@
 ## Preprocess data, write TAF data tables
 
-## Before: Area37cuyrrentsofia.csv,
-##         EffortindexRousseaAugNominal.csv (bootstrap/data)
+## Before: catch.csv, effort.csv, priors.csv (bootstrap/data)
 ## After:  catch_by_stock.png, catch_relative.png, catch_total.png,
 ##         driors_2.png, input.rds (data)
-## Test again for R
-## Test 2
 
 library(TAF)
 library(dplyr)   # filter, group_by, left_join, mutate, summarise, ungroup
 library(ggplot2)
-library(janitor) # clean_names
 library(purrr)   # map2
 library(sraplus) # format_driors, plot_driors
 library(stringr) # str_extract_all, str_replace_all, str_trim
@@ -19,11 +15,10 @@ library(tidyr)   # nest, pivot_longer
 mkdir("data")
 
 ## Read catch data, convert to tibble (long format)
-catch <- read.csv("bootstrap/data/catch.csv")
-catch <- catch %>%
-  pivot_longer(-c(Year, Total), names_to="stock", values_to="capture") %>%
-  filter(!is.na(Year)) %>%
-  clean_names()
+catch <- read.taf("bootstrap/data/catch.csv")
+catch$Total <- NULL  # not used, not a stock
+catch <- pivot_longer(catch, !Year, "stock", values_to="capture")
+names(catch) <- tolower(names(catch))
 
 ## Plot catches
 catch %>%
