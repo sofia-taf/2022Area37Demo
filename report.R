@@ -1,6 +1,7 @@
 ## Prepare plots and tables for report
 
-## Before: current_status.csv, results.rds, stock_timeseries.csv (output)
+## Before: sofia20_proportions.csv (bootstrap/data), results.rds (model),
+##         current_status.csv, stock_timeseries.csv (output)
 ## After:  bbmsy.png, cpue_1.png, driors_1.png, posterior_1.png,
 ##         status_by_year.png, status_sofia.png, status_sraplus.png,
 ##         stock_posterior.pdf, stock_timeseries.pdf (report)
@@ -15,10 +16,10 @@ source("utilities.R") # plotProp
 
 mkdir("report")
 
-stocks <- readRDS("output/results.rds")
+stocks <- readRDS("model/results.rds")
 
 ## Plot data and priors, posteriors, and CPUE
-plot_driors(stocks$driors[[1]]) # stock 1 is Sardinella aurita
+plot_driors(stocks$driors[[1]])
 ggsave("report/driors_1.png")
 plot_prior_posterior(stocks$sraplus_fit[[1]], stocks$driors[[1]])
 ggsave("report/posterior_1.png")
@@ -43,7 +44,7 @@ dev.off()
 ## Plot posteriors and time series for each stock
 stocks <- stocks %>%
   mutate(plot_prior_posterior_plot=
-           map2(sraplus_fit,driors,plot_prior_posterior))
+           map2(sraplus_fit, driors, plot_prior_posterior))
 savefoo <- function(stock, plot) print(plot + labs(title=stock))
 pdf("report/stock_posterior.pdf")
 walk2(stocks$stock, stocks$plot_prior_posterior_plot, savefoo)
@@ -65,9 +66,9 @@ dev.off()
 
 ## Overlay B/Bmsy time series of all stocks in a single plot
 ggplot(newResTab, aes(x=yr, y=bbmsy, colour=Stock, group=Stock)) +
-  geom_line(show.legend = TRUE) +
-  geom_hline(yintercept=0.8, linetype="dashed", color = "red", size=2) +
-  geom_hline(yintercept=1.2, linetype="dashed", color = "green", size=2)
+  geom_line(show.legend=TRUE) +
+  geom_hline(yintercept=0.8, linetype="dashed", color="red", size=2) +
+  geom_hline(yintercept=1.2, linetype="dashed", color="green", size=2)
 ggsave("report/bbmsy.png")
 
 ## Overlay B/Bmsy time series of all stocks in a single plot without legend

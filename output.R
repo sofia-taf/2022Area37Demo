@@ -1,18 +1,17 @@
 ## Extract results of interest, write TAF output tables
 
 ## Before: results.rds (model)
-## After:  stock_tables/*.csv, all_effort.txt, current_status.csv, results.rds,
+## After:  stock_tables/*.csv, all_effort.txt, current_status.csv,
 ##         stock_timeseries.csv (output)
 
 library(TAF)
-library(dplyr)   # case_when, count, group_by, select, filter, mutate
-library(tidyr)   # pivot_wider, unnest
+library(dplyr) # case_when, count, group_by, select, filter, mutate
+library(tidyr) # pivot_wider, unnest
 
 mkdir("output")
 
 ## Read model results and make available in 'output' folder
 stocks <- readRDS("model/results.rds")
-cp("model/results.rds", "output")
 
 ## Categorize stock status by comparing B/Bmsy to 0.8 and 1.2
 current_status <- stocks %>%
@@ -31,7 +30,7 @@ current_status %>%
 mkdir("output/stock_tables")
 for(i in 1:nrow(stocks)){
   write.csv(stocks$sraplus_fit[i][[1]]$results,
-            file=paste0("output/stock_tables/",stocks$stock[i],".csv"))
+            file=paste0("output/stock_tables/", stocks$stock[i], ".csv"))
   write.table(stocks$sraplus_fit[i][[1]]$results,
               file="output/all_effort.txt", append=TRUE)
 }
@@ -44,7 +43,7 @@ n <- length(stocks$stock)
 resList <- vector(mode="list", length=n)
 for(i in 1:n){
   tmp <- stocks$sraplus_fit[[i]]$results %>%
-    filter(variable %in% c("b_div_bmsy","u_div_umsy")) %>%
+    filter(variable %in% c("b_div_bmsy", "u_div_umsy")) %>%
     pivot_wider(id_cols="year", names_from="variable", values_from="mean")
   resList[[i]] <- cbind(stock=stocks$stock[i], tmp)
 }
