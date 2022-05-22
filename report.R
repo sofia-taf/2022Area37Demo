@@ -65,14 +65,14 @@ ggarrange(p1, p2, ncol=1)
 dev.off()
 
 ## Overlay B/Bmsy time series of all stocks in a single plot
-ggplot(newResTab, aes(x=yr, y=bbmsy, colour=Stock, group=Stock)) +
+ggplot(newResTab, aes(x=year, y=bbmsy, colour=stock, group=stock)) +
   geom_line(show.legend=TRUE) +
   geom_hline(yintercept=0.8, linetype="dashed", color="red", size=2) +
   geom_hline(yintercept=1.2, linetype="dashed", color="green", size=2)
 ggsave("report/bbmsy.png")
 
 ## Overlay B/Bmsy time series of all stocks in a single plot without legend
-ggplot(newResTab, aes(x=yr, y=bbmsy, colour=Stock, group=Stock)) +
+ggplot(newResTab, aes(x=year, y=bbmsy, colour=stock, group=stock)) +
   geom_line(show.legend = FALSE) +
   geom_hline(yintercept=0.8, linetype="dashed", color = "red", size=2) +
   geom_hline(yintercept=1.2, linetype="dashed", color = "green", size=2)
