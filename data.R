@@ -5,7 +5,7 @@
 
 library(TAF)
 library(SOFIA)
-library(dplyr, warn.conflicts=FALSE) # filter, group_by, left_join, mutate, ...
+supressMessages(library(dplyr)) # filter, group_by, left_join, mutate, ...
 library(ggplot2)
 library(sraplus) # plot_driors
 library(tidyr)   # nest, pivot_longer

@@ -7,10 +7,10 @@
 ##         stock_posterior.pdf, stock_timeseries.pdf (report)
 
 library(TAF)
-library(dplyr)        # mutate
-library(egg)          # ggarrange
+suppressMessages(library(dplyr)) # mutate
+suppressMessages(library(egg))   # ggarrange
 library(ggplot2)
-library(purrr)        # map2, walk2
+suppressMessages(library(purrr)) # map2, walk2
 library(sraplus)      # plot_driors, plot_prior_posterior, plot_sraplus
 source("utilities.R") # plotProp
 

@@ -4,7 +4,7 @@
 ## After:  stock_tables/*.csv, current_status.csv, stock_timeseries.csv (output)
 
 library(TAF)
-library(dplyr, warn.conflicts=FALSE) # case_when, count, group_by, select, ...
+suppressMessages(library(dplyr)) # case_when, count, group_by, select, ...
 library(tidyr) # pivot_wider, unnest
 
 mkdir("output")
