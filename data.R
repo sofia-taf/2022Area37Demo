@@ -19,7 +19,7 @@ library(tidyr)   # nest, pivot_longer
 mkdir("data")
 
 ## Read catch data, convert to tibble (long format)
-catch <- read.csv("bootstrap/data/democatch.csv")
+catch <- read.csv("bootstrap/data/catch.csv")
 catch <- catch %>%
   pivot_longer(-c(Year, Total), names_to="stock", values_to="capture") %>%
   filter(!is.na(Year)) %>%
@@ -69,7 +69,7 @@ catch <- catch %>%
   filter(!is.na(taxa))
 
 ## Read effort data, add 'effort' column
-effort <- read.csv("bootstrap/data/EffortindexRousseaAugNominal.csv")
+effort <- read.csv("bootstrap/data/effort.csv")
 index <- effort$E1
 catch_effort <- catch %>%
   left_join(effort, by=c("year"="Year"))
