@@ -4,7 +4,7 @@
 ## After:  results.rds (model)
 
 library(TAF)
-library(dplyr)   # filter, mutate, sample_n, ungroup
+library(dplyr, warn.conflicts=FALSE) # filter, mutate, sample_n, ungroup
 library(purrr)   # map, map_lgl, safely
 library(sraplus) # diagnose_sraplus, fit_sraplus, summarize_sralpus
 
