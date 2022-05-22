@@ -5,7 +5,7 @@
 
 library(TAF)
 library(SOFIA)
-library(dplyr)   # filter, group_by, left_join, mutate, summarise, ungroup
+library(dplyr, warn.conflicts=FALSE) # filter, group_by, left_join, mutate, ...
 library(ggplot2)
 library(sraplus) # plot_driors
 library(tidyr)   # nest, pivot_longer
@@ -19,12 +19,11 @@ catch <- pivot_longer(catch, !Year, "stock", values_to="capture")
 names(catch) <- tolower(names(catch))
 
 ## Plot catches
-taf.png("data/catch.png")
 catch %>%
   ggplot(aes(year, capture, color=stock)) +
   geom_line(show.legend=FALSE) +
   geom_point()
-dev.off()
+ggsave("data/catch.png", width=16, height=8)
 
 ## Select stocks with min 10 years of non-zero catches...
 viable_stocks <- catch %>%
