@@ -44,11 +44,10 @@ Sys.time() - a
 stocks <- stocks %>%
   mutate(sraplus_worked = map_lgl(map(sraplus_fit,"error"), is.null)) %>%
   filter(sraplus_worked) %>%
-  mutate(sraplus_fit = map(sraplus_fit,"result"))
-stocks <- stocks %>%
-  mutate(sraplus_summary = map(sraplus_fit, summarize_sralpus))
-stocks <- stocks %>%
-  mutate(sraplus_diagnostics = map2(sraplus_fit, driors, diagnose_sraplus))
+  mutate(sraplus_fit = map(sraplus_fit,"result")) %>%
+  mutate(sraplus_summary = map(sraplus_fit, summarize_sralpus)) %>%
+  mutate(sraplus_diagnostics = map2(sraplus_fit, driors, diagnose_sraplus)) %>%
+  arrange(stock)
 
 ## Export
 saveRDS(stocks, "model/results.rds")
