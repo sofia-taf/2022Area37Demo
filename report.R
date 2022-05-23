@@ -18,13 +18,14 @@ mkdir("report")
 
 stocks <- readRDS("model/results.rds")
 
-## Plot data and priors, posteriors, and CPUE
-plot_driors(stocks$driors[[1]])
-ggsave("report/driors_1.png")
-plot_prior_posterior(stocks$sraplus_fit[[1]], stocks$driors[[1]])
-ggsave("report/posterior_1.png")
-taf.png("cpue_1")
-with(stocks$driors[[1]], plot(catch[years %in% effort_years] / effort))
+## Plot CPUE
+pdf("report/stock_cpue.pdf")
+for(i in seq_len(nrow(stocks)))
+{
+  x <- stocks$driors[[i]]$effort_years
+  y <- with(stocks$driors[[i]], catch[years %in% x] / effort)
+  plot(x, y, ylim=lim(y), main=stocks$stock[i], xlab="", ylab="CPUE", type="l")
+}
 dev.off()
 
 ## Barplots of stock status
