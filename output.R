@@ -17,9 +17,9 @@ current_status <- stocks %>%
   select(stock, taxa, sraplus_summary) %>%
   unnest(cols = sraplus_summary) %>%
   filter(variable == "b_div_bmsy") %>%
-  mutate(status = case_when(mean > 1.2 ~ "underfished",
-                            mean > 0.8 ~ "fully fished",
-                            TRUE ~ "overfished"))
+  mutate(status = case_when(mean > 1.2 ~ "Underfished",
+                            mean > 0.8 ~ "Fully fished",
+                            TRUE ~ "Overfished"))
 write.taf(current_status, "output/current_status.csv")
 table(current_status$status)
 
