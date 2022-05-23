@@ -2,17 +2,15 @@
 
 ## Before: sofia20_proportions.csv (bootstrap/data), results.rds (model),
 ##         current_status.csv, stock_timeseries.csv (output)
-## After:  bbmsy.png, cpue_1.png, driors_1.png, posterior_1.png,
-##         status_by_year.png, status_sofia.png, status_sraplus.png,
-##         stock_posterior.pdf, stock_timeseries.pdf (report)
+## After:  bbmsy.png, bbmsywo.png, status_by_year.png, status_sofia.png,
+##         status_sraplus.png, stock_cpue.pdf, stock_posterior.pdf,
+##         stock_timeseries.pdf (report)
 
 library(TAF)
 library(SOFIA)
-suppressMessages(library(dplyr)) # mutate
 suppressMessages(library(egg))   # ggarrange
 library(ggplot2)
-suppressMessages(library(purrr)) # map2, walk2
-library(sraplus) # plot_driors, plot_prior_posterior, plot_sraplus
+library(sraplus) # plot_prior_posterior, plot_sraplus
 
 mkdir("report")
 
@@ -44,18 +42,16 @@ barplot(Proportion~Category, results_sofia, col=c(3,7,2), ylim=0:1)
 dev.off()
 
 ## Plot posteriors and time series for each stock
-stocks <- stocks %>%
-  mutate(plot_prior_posterior_plot=
-           map2(sraplus_fit, driors, plot_prior_posterior))
-savefoo <- function(stock, plot) print(plot + labs(title=stock))
 pdf("report/stock_posterior.pdf")
-walk2(stocks$stock, stocks$plot_prior_posterior_plot, savefoo)
+for(i in seq_len(nrow(stocks)))
+{
+  p <- plot_prior_posterior(stocks$sraplus_fit[[i]], stocks$driors[[i]])
+  suppressWarnings(print(p + ggtitle(stocks$stock[i])))
+}
 dev.off()
-stocks <- stocks %>%
-  mutate(sraplus_fit_plot = map(sraplus_fit, plot_sraplus))
-savefoo <- function(stock, plot) print(plot + labs(title=stock))
 pdf("report/stock_timeseries.pdf")
-walk2(stocks$stock, stocks$sraplus_fit_plot, savefoo)
+for(i in seq_len(nrow(stocks)))
+  print(plot_sraplus(stocks$sraplus_fit[[i]]) + ggtitle(stocks$stock[i]))
 dev.off()
 
 ## Plot time series for each stock
