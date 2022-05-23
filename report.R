@@ -32,14 +32,15 @@ dev.off()
 taf.png("status_sraplus")
 current_status <- read.taf("output/current_status.csv")
 current_status$status <- ordered(current_status$status,
-                                 c("underfished","fully fished","overfished"))
-barplot(prop.table(table(current_status$status)), col=c("green","yellow","red"))
+                                 c("Underfished","Fully fished","Overfished"))
+barplot(prop.table(table(current_status$status)), col=c(3,7,2), ylim=0:1,
+        xlab="Category", ylab="Proportion")
 dev.off()
 taf.png("status_sofia")
 results_sofia <- read.taf("bootstrap/data/sofia20_proportions.csv")
 results_sofia$Category <- ordered(results_sofia$Category,
                                   c("Underfished","Fully fished","Overfished"))
-barplot(Proportion~Category, results_sofia, col=c("green","yellow","red"))
+barplot(Proportion~Category, results_sofia, col=c(3,7,2), ylim=0:1)
 dev.off()
 
 ## Plot posteriors and time series for each stock
