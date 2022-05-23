@@ -55,23 +55,16 @@ for(i in seq_len(nrow(stocks)))
 dev.off()
 
 ## Plot time series for each stock
-newResTab <- read.taf("output/stock_timeseries.csv")
+ts.status <- read.taf("output/stock_timeseries.csv")
 taf.png("status_by_year")
-p1 <- plotCat(newResTab, method="effEdepP", cats=3, type="count")
-p2 <- plotCat(newResTab, method="effEdepP", cats=3, type="stock")
+p1 <- plotCat(ts.status, method="effEdepP", cats=3, type="count")
+p2 <- plotCat(ts.status, method="effEdepP", cats=3, type="stock")
 ggarrange(p1, p2, ncol=1)
 dev.off()
 
 ## Overlay B/Bmsy time series of all stocks in a single plot
-ggplot(newResTab, aes(x=year, y=bbmsy, colour=stock, group=stock)) +
+ggplot(ts.status, aes(x=year, y=bbmsy, colour=stock, group=stock)) +
   geom_line(show.legend=TRUE) +
   geom_hline(yintercept=0.8, linetype="dashed", color="red", size=2) +
   geom_hline(yintercept=1.2, linetype="dashed", color="green", size=2)
-ggsave("report/bbmsy.png")
-
-## Overlay B/Bmsy time series of all stocks in a single plot without legend
-ggplot(newResTab, aes(x=year, y=bbmsy, colour=stock, group=stock)) +
-  geom_line(show.legend = FALSE) +
-  geom_hline(yintercept=0.8, linetype="dashed", color = "red", size=2) +
-  geom_hline(yintercept=1.2, linetype="dashed", color = "green", size=2)
-ggsave("report/bbmsywo.png")
+ggsave("report/bbmsy.png", width=12, height=6)
