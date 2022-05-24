@@ -2,9 +2,8 @@
 
 ## Before: sofia20_proportions.csv (bootstrap/data), results.rds (model),
 ##         current_status.csv, stock_timeseries.csv (output)
-## After:  bbmsy.png, bbmsywo.png, status_by_year.png, status_sofia.png,
-##         status_sraplus.png, stock_cpue.pdf, stock_posterior.pdf,
-##         stock_timeseries.pdf (report)
+## After:  bbmsy.png, status_by_year.png, status_sofia.png, status_sraplus.png,
+##         stock_cpue.pdf, stock_posterior.pdf, stock_timeseries.pdf (report)
 
 library(TAF)
 library(SOFIA)
@@ -55,15 +54,15 @@ for(i in seq_len(nrow(stocks)))
 dev.off()
 
 ## Plot time series for each stock
-ts.status <- read.taf("output/stock_timeseries.csv")
+stock.timeseries <- read.taf("output/stock_timeseries.csv")
 taf.png("status_by_year")
-p1 <- plotCat(ts.status, method="effEdepP", cats=3, type="count")
-p2 <- plotCat(ts.status, method="effEdepP", cats=3, type="stock")
+p1 <- plotCat(stock.timeseries, method="effEdepP", cats=3, type="count")
+p2 <- plotCat(stock.timeseries, method="effEdepP", cats=3, type="stock")
 ggarrange(p1, p2, ncol=1)
 dev.off()
 
 ## Overlay B/Bmsy time series of all stocks in a single plot
-ggplot(ts.status, aes(x=year, y=bbmsy, colour=stock, group=stock)) +
+ggplot(stock.timeseries, aes(x=year, y=bbmsy, colour=stock, group=stock)) +
   geom_line(show.legend=TRUE) +
   geom_hline(yintercept=0.8, linetype="dashed", color="red", size=2) +
   geom_hline(yintercept=1.2, linetype="dashed", color="green", size=2)
