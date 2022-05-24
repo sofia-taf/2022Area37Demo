@@ -35,17 +35,15 @@ for(i in seq_len(nrow(stocks))){
 stocks$sraplus_diagnostics[[1]]
 
 ## Tabulate B/Bmsy and F/Fmsy time series for each stock
-n <- length(stocks$stock)
-resList <- vector(mode="list", length=n)
-for(i in 1:n){
+stock.timeseries <- list()
+for(i in seq_len(nrow(stocks))){
   tmp <- stocks$sraplus_fit[[i]]$results %>%
     filter(variable %in% c("b_div_bmsy", "u_div_umsy")) %>%
     pivot_wider(id_cols="year", names_from="variable", values_from="mean")
-  resList[[i]] <- cbind(stock=stocks$stock[i], tmp)
+  stock.timeseries[[i]] <- cbind(stock=stocks$stock[i], tmp)
 }
-resTab <- Reduce(rbind, resList)
-newResTab <- resTab
-names(newResTab) <- c("stock", "year", "bbmsy", "ffmsy")
-newResTab$bbmsy.effEdepP <- newResTab$bbmsy
-newResTab$ffmsy.effEdepP <- newResTab$ffmsy
-write.taf(newResTab, "output/stock_timeseries.csv")
+stock.timeseries <- do.call(rbind, stock.timeseries)
+names(stock.timeseries) <- c("stock", "year", "bbmsy", "ffmsy")
+stock.timeseries$bbmsy.effEdepP <- stock.timeseries$bbmsy
+stock.timeseries$ffmsy.effEdepP <- stock.timeseries$ffmsy
+write.taf(stock.timeseries, "output/stock_timeseries.csv")
