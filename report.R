@@ -6,7 +6,7 @@
 ##         stock_cpue.pdf, stock_posterior.pdf, stock_timeseries.pdf (report)
 
 library(TAF)
-library(SOFIA)
+taf.library(SOFIA)
 suppressMessages(library(egg))   # ggarrange
 library(ggplot2)
 library(sraplus) # plot_prior_posterior, plot_sraplus

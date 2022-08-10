@@ -4,7 +4,7 @@
 ## After:  catch_effort.csv, catch.png, driors.pdf, input.rds (data)
 
 library(TAF)
-library(SOFIA)
+taf.library(SOFIA)
 suppressMessages(library(dplyr)) # filter, group_by, left_join, mutate, ...
 library(ggplot2)
 library(sraplus) # plot_driors
