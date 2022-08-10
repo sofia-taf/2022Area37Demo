@@ -38,9 +38,6 @@ catch <- catch %>%
   filter(year > min(year[capture > 0]),
          year <= max(year[capture > 0]))
 
-## Add column 'taxa'
-catch$taxa <- catch$stock
-
 ## Read effort data, combine catch and effort data
 effort <- read.taf("bootstrap/data/effort.csv")
 effort <- pivot_longer(effort, !Year, "stock", values_to="effort")
@@ -49,7 +46,7 @@ catch_effort <- addEffort(catch, effort, same.effort=TRUE)
 
 ## Create nested tibble with 'data' column (catch and effort)
 stocks <- catch_effort %>%
-  group_by(stock, taxa) %>%
+  group_by(stock) %>%
   nest() %>%
   ungroup()
 

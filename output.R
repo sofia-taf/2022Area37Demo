@@ -14,7 +14,7 @@ stocks <- readRDS("model/results.rds")
 
 ## Categorize stock status by comparing B/Bmsy to 0.8 and 1.2
 current_status <- stocks %>%
-  select(stock, taxa, sraplus_summary) %>%
+  select(stock, sraplus_summary) %>%
   unnest(cols = sraplus_summary) %>%
   filter(variable == "b_div_bmsy") %>%
   mutate(status = case_when(mean > 1.2 ~ "Underfished",
