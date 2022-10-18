@@ -1,7 +1,8 @@
 ## Preprocess data, write TAF data tables
 
 ## Before: catch.csv, effort.csv, priors.csv (bootstrap/data)
-## After:  catch_effort.csv, catch.png, driors.pdf, input.rds (data)
+## After:  catch_by_stock.png, catch_effort.csv, catch_relative.png,
+##         catch_total.png, driors.pdf, input.rds (data)
 
 library(TAF)
 taf.library(SOFIA)
@@ -18,12 +19,20 @@ catch$Total <- NULL  # not used, not a stock
 catch <- pivot_longer(catch, !Year, "stock", values_to="capture")
 names(catch) <- tolower(names(catch))
 
-## Plot catches
+## Plot catch
+catch %>%
+  group_by(year) %>%
+  summarise(total_capture=sum(capture)) %>%
+  ggplot(aes(year, total_capture)) +
+  geom_line()
+ggsave("data/catch_total.png", width=12, height=6)
+
+## Plot catch by stock
 catch %>%
   ggplot(aes(year, capture, color=stock)) +
   geom_line(show.legend=FALSE) +
   geom_point()
-ggsave("data/catch.png", width=16, height=8)
+ggsave("data/catch_by_stock.png", width=12, height=6)
 
 ## Select stocks with min 10 years of non-zero catches...
 viable_stocks <- catch %>%
@@ -37,6 +46,14 @@ catch <- catch %>%
   group_by(stock) %>%
   filter(year > min(year[capture > 0]),
          year <= max(year[capture > 0]))
+
+## Plot relative catch
+catch %>%
+  group_by(stock) %>%
+  mutate(capture = capture / max(capture)) %>%
+  ggplot(aes(year, capture, group=stock)) +
+  geom_point()
+ggsave("data/catch_relative.png", width=12, height=6)
 
 ## Read effort data, combine catch and effort data
 effort <- read.taf("bootstrap/data/effort.csv")
