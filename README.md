@@ -1,3 +1,6 @@
-# 2022Area37demo
+# Demo for the Area 37 Workshop
 
-Demo for the course
+Mediterranean and Black Sea
+
+See [SOFIA-TAF
+tutorial](https://github.com/sofia-taf/doc/blob/main/sofia_taf_tutorial.md)
